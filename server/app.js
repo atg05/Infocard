@@ -1,24 +1,13 @@
 const express = require('express');
 const app = express();
-const moongoose=require('mongoose');
+
 const dotenv = require('dotenv');
 
 
 dotenv.config({path:'./.env'});
 //database
-const db = process.env.DATABASE_URL;
-moongoose.connect(db,{
-    useNewUrlParser:true,
-    useCreateIndex:true,
-    useUnifiedTopology:true,
-    useFindAndModify:false
-
-}).then(()=>{
-    console.log("Database connected");
-}).catch((err) => console.log('No Connection'+err));
-
-
-
+require('./db/conn');
+const PORT = process.env.PORT;
 
 //middleware
 
@@ -55,7 +44,7 @@ app.get('/register',(req,res)=>{
     res.send("This is call for register");
 });
 
-app.listen(8000,()=>{
-    console.log('Server is running on port 8000');
+app.listen(PORT,()=>{
+    console.log(`Server is running on port ${PORT}`);
 })
 
