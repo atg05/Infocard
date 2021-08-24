@@ -1,0 +1,23 @@
+{
+  "name": "Infocard",
+  "version": "1.0.0",
+  "description": "Club Mentor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atg05/Infocard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atg05/Infocard/issues"
+  },
+  "homepage": "https://github.com/atg05/Infocard#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
