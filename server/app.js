@@ -1,6 +1,19 @@
 const express = require('express');
 const app = express();
 
+
+const middleware =(req,res,next) => {
+    console.log("Adding middleware with next feature");
+    
+}
+
+middleware();
+
+
+
+
+
+
 app.get('/',(req,res) => {
     res.send('Hello World from server');
 
