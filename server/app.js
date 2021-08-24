@@ -5,8 +5,10 @@ const dotenv = require('dotenv');
 
 
 dotenv.config({path:'./.env'});
+
 //database
 require('./db/conn');
+//const userSchema = require('./model/userSchema');
 const PORT = process.env.PORT;
 
 //middleware
@@ -17,11 +19,6 @@ const middleware =(req,res,next) => {
 }
 
 middleware();
-
-
-
-
-
 
 app.get('/',(req,res) => {
     res.send('Hello World from server');
