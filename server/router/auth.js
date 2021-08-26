@@ -7,8 +7,9 @@ router.get('/',(req,res)=>{
 
 
 router.post('/signup',(req,res)=>{
-    console.log(req.body);
-    res.json({message:req.body});
+    const {name,email,phone,password,cpassword}=req.body;
+    console.log(name,email,phone,password,cpassword);
+    
 });
 
 module.exports =router;
