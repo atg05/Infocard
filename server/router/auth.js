@@ -31,7 +31,7 @@ router.post('/signup',(req,res)=>{
 
         }).catch((err) => res.status(500).json({error: "Failed to register"}));
 
-    }).catch(err=>{console.log("Error")});
+    }).catch(err=>{console.log("Error in database")});
 
 
 });
