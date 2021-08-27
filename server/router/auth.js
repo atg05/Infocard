@@ -1,6 +1,7 @@
 const { json } = require('express');
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');  
 
 require('../db/conn');
 const User=require("../model/userSchema");
@@ -9,33 +10,6 @@ const User=require("../model/userSchema");
 router.get('/',(req,res)=>{
     res.send('Server from router.js');
 });
-
-
-// router.post('/signup',(req,res)=>{
-//     const {name,email,phone,work,password,cpassword}=req.body;
-//     if(!name|| !email || !phone || !work|| !password || !cpassword){
-//         return res.status(422).json({error:" Please Fill requierd field"});
-        
-//     }
-
-//     User.findOne({email:email})
-//     .then((userExist)=>{
-//         if(userExist) {
-//             return res.status(422).json({error: "Email already Exist"});
-//         }
-//         // When key and value are same then no need to write name: name , instead write name
-
-//         const user = new User({name,email,phone,work,password,cpassword});
-        
-//         user.save().then(()=>{
-//             res.status(201).json({message: "Registration Succcessful"});
-
-//         }).catch((err) => res.status(500).json({error: "Failed to register"}));
-
-//     }).catch(err=>{console.log("Error in database")});
-
-
-// });
 
 router.post('/signup',async (req,res)=>{
     const {name,email,phone,work,password,cpassword}=req.body;
@@ -54,9 +28,7 @@ router.post('/signup',async (req,res)=>{
         const user = new User({name,email,phone,work,password,cpassword});       
         await user.save();
         res.status(201).json({message: "Sucessfully Registered"});
-       }
-
-      
+       }  
 
         
     } catch (error) {
@@ -67,16 +39,28 @@ router.post('/signup',async (req,res)=>{
 
 });
 
-router.post('/login',async (req,res)=>{     
+router.post('/signin',async (req,res)=>{     
     try {
+        
+
         const {email,password} = req.body;
-        if(!email || !password) {
-            return res.status(400),json({error:"Filled required filled"});
+        console.log({email,password});
+        if(!email || !password){
+            return res.status(400),json({error:"Fill required field"});
+            
         }
 
+
         const userLogin = await User.findOne({email});
-        res.json({message: "User Sign In with Email Verification"});
+
+        const isMatch= await bcrypt.compare(password,userLogin.password);
+        if(!isMatch){
+            return res.json({message:"Invalid Credentials"});
+        } else {
+            res.json({message: "Sign In"});
+        }
         
+       
     } catch (error) {
         console.log(error);
         
