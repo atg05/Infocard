@@ -1,3 +1,4 @@
+const { json } = require('express');
 const express = require('express');
 const router = express.Router();
 
@@ -36,7 +37,7 @@ router.get('/',(req,res)=>{
 
 // });
 
-router.post('/signup',(req,res)=>{
+router.post('/signup',async (req,res)=>{
     const {name,email,phone,work,password,cpassword}=req.body;
     if(!name|| !email || !phone || !work|| !password || !cpassword){
         return res.status(422).json({error:" Please Fill requierd field"});
@@ -47,22 +48,39 @@ router.post('/signup',(req,res)=>{
         const userExist = await User.findOne({email:email});
         if(userExist){
             return res.status(422).json({error: "Email Already Exist"});
+       } else if(password != cpassword){
+           return res.status(422).json({error: "Password Not matched"});
+       } else {
+        const user = new User({name,email,phone,work,password,cpassword});       
+        await user.save();
+        res.status(201).json({message: "Sucessfully Registered"});
        }
 
-       const user = new User({name,email,phone,work,password,cpassword});
-       
-       await user.save();
-       res.status(201).json({message: "Sucessfully Registered"});
+      
 
         
     } catch (error) {
         console.log(error);
         
     }
-  
-      
     
 
 });
+
+router.post('/login',async (req,res)=>{     
+    try {
+        const {email,password} = req.body;
+        if(!email || !password) {
+            return res.status(400),json({error:"Filled required filled"});
+        }
+
+        const userLogin = await User.findOne({email});
+        res.json({message: "User Sign In with Email Verification"});
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+})
 
 module.exports =router;

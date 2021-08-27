@@ -35,9 +35,9 @@ app.get('/contact',(req,res)=>{
     res.send("This is call for Contact");
 });
 
-app.get('/login',(req,res)=>{
-    res.send("This is Call for login");
-});
+// app.get('/login',(req,res)=>{
+//     res.send("This is Call for login");
+// });
 
 app.get('/register',(req,res)=>{
     res.send("This is call for register");
