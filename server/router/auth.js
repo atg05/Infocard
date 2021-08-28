@@ -2,6 +2,7 @@ const { json } = require('express');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');  
+const jwt = require('jsonwebtoken');
 
 require('../db/conn');
 const User=require("../model/userSchema");
@@ -39,7 +40,7 @@ router.post('/signup',async (req,res)=>{
 
 });
 
-router.post('/signin',async (req,res)=>{     
+router.post('/login',async (req,res)=>{     
     try {
         
 
@@ -50,16 +51,20 @@ router.post('/signin',async (req,res)=>{
             
         }
 
-
         const userLogin = await User.findOne({email});
 
-        const isMatch= await bcrypt.compare(password,userLogin.password);
-        if(!isMatch){
-            return res.json({message:"Invalid Credentials"});
-        } else {
-            res.json({message: "Sign In"});
-        }
-        
+        // Token 
+        if(userLogin){
+            const isMatch= await bcrypt.compare(password,userLogin.password);
+            const token = await userLogin.generateAuthToken();
+            console.log(token);
+            if(!isMatch){
+                return res.json({message:"Invalid Credentials"});
+            } else {
+                res.json({message: "Sign In"});
+            }
+
+        }       
        
     } catch (error) {
         console.log(error);
